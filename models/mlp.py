@@ -9,10 +9,10 @@ from keras.preprocessing import sequence
 from keras.datasets import imdb
 from sklearn.metrics import precision_recall_fscore_support as score
 
-MAX_FEATURES = 20000
+MAX_FEATURES = 5000
 batch_size = 32
-embedding_dims = 128
-MAX_SEQUENCE_LENGTH = 80
+embedding_dims = 32
+MAX_SEQUENCE_LENGTH = 500
 
 (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words = MAX_FEATURES)
 
@@ -23,9 +23,7 @@ x_test = sequence.pad_sequences(x_test, MAX_SEQUENCE_LENGTH)
 model = Sequential()
 model.add(Embedding(MAX_FEATURES, embedding_dims, input_length = MAX_SEQUENCE_LENGTH))
 model.add(Flatten())
-model.add(Dense(128, activation='relu'))
-model.add(Dropout(0.2))
-model.add(Dense(128, activation='relu'))
+model.add(Dense(256, activation='relu'))
 model.add(Dropout(0.2))
 model.add(Dense(1, activation = "sigmoid"))
 
