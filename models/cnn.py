@@ -16,7 +16,6 @@ embedding_dims = 50
 kernel_size = 3
 filters = 512
 
-
 (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words = MAX_FEATURES)
 
 x_train = sequence.pad_sequences(x_train, MAX_SEQUENCE_LENGTH)

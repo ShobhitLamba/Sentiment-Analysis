@@ -1,6 +1,6 @@
 '''Major portion of the code obtained from https://github.com/keras-team/keras/blob/master/examples/imdb_fasttext.py
 
-This example demonstrates the use of fasttext for text classification
+FastText running over imdb dataset
 Based on Joulin et al's paper:
 Bags of Tricks for Efficient Text Classification
 https://arxiv.org/abs/1607.01759
@@ -59,7 +59,7 @@ def add_ngram(sequences, token_indice, ngram_range = 2):
 
 # Set parameters:
 # ngram_range = 2 will add bi-grams features
-ngram_range = 1
+ngram_range = 2
 MAX_FEATURES = 20000
 MAX_SEQUENCE_LENGTH = 400
 batch_size = 32
@@ -68,7 +68,6 @@ embedding_dims = 50
 (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words = MAX_FEATURES)
 
 if ngram_range > 1:
-    print('Adding {}-gram features'.format(ngram_range))
     # Create set of unique n-gram from the training set.
     ngram_set = set()
     for input_list in x_train:
@@ -93,20 +92,10 @@ if ngram_range > 1:
 x_train = sequence.pad_sequences(x_train, maxlen = MAX_SEQUENCE_LENGTH)
 x_test = sequence.pad_sequences(x_test, maxlen = MAX_SEQUENCE_LENGTH)
 
-print('Build model...')
+# Building the network architecture
 model = Sequential()
-
-# we start off with an efficient embedding layer which maps
-# our vocab indices into embedding_dims dimensions
-model.add(Embedding(MAX_FEATURES,
-                    embedding_dims,
-                    input_length = MAX_SEQUENCE_LENGTH))
-
-# we add a GlobalAveragePooling1D, which will average the embeddings
-# of all words in the document
+model.add(Embedding(MAX_FEATURES, embedding_dims, input_length = MAX_SEQUENCE_LENGTH))
 model.add(GlobalAveragePooling1D())
-
-# We project onto a single unit output layer, and squash it with a sigmoid:
 model.add(Dense(1, activation='sigmoid'))
 
 model.compile(loss='binary_crossentropy',

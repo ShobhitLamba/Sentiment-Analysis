@@ -11,6 +11,7 @@ from sklearn.metrics import precision_recall_fscore_support as score
 
 MAX_FEATURES = 20000
 batch_size = 32
+embedding_dims = 128
 MAX_SEQUENCE_LENGTH = 80
 
 (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words = MAX_FEATURES)
@@ -20,7 +21,7 @@ x_test = sequence.pad_sequences(x_test, MAX_SEQUENCE_LENGTH)
 
 # Building the network architecture
 model = Sequential()
-model.add(Embedding(MAX_FEATURES, 128))
+model.add(Embedding(MAX_FEATURES, embedding_dims))
 model.add(GRU(128, dropout = 0.2, recurrent_dropout = 0.2)) 
 model.add(Dense(1, activation = "sigmoid"))
 
