@@ -1,12 +1,11 @@
-# Recurrent Neural Network with LSTM running over imdb dataset
+# Recurrent Neural Network with Gated Recurrent Unit (GRU) running over imdb dataset
 # Author: Shobhit Lamba
 # e-mail: slamba4@uic.edu
 
 # Importing the libraries
 from keras.models import Sequential
-from keras.layers import Embedding, LSTM, Dense, Dropout
+from keras.layers import Embedding, Dense, GRU
 from keras.preprocessing import sequence
-from keras.layers.advanced_activations import PReLU
 from keras.datasets import imdb
 from sklearn.metrics import precision_recall_fscore_support as score
 
@@ -22,13 +21,7 @@ x_test = sequence.pad_sequences(x_test, MAX_SEQUENCE_LENGTH)
 # Building the network architecture
 model = Sequential()
 model.add(Embedding(MAX_FEATURES, 128))
-model.add(LSTM(128, dropout = 0.2, recurrent_dropout = 0.2)) 
-model.add(Dense(256, activation = 'linear'))
-model.add(PReLU(init = 'zero', weights = None))
-model.add(Dropout(0.2))
-model.add(Dense(256, activation = 'linear'))
-model.add(PReLU(init = 'zero', weights = None))
-model.add(Dropout(0.2))
+model.add(GRU(128, dropout = 0.2, recurrent_dropout = 0.2)) 
 model.add(Dense(1, activation = "sigmoid"))
 
 # Compiling the network

@@ -1,6 +1,6 @@
 # Convolutional Neural Network with LSTM running over imdb dataset
 # Author: Shobhit Lamba
-# e-mail: shobhit.lamba@uic.edu
+# e-mail: slamba4@uic.edu
 
 # Importing the libraries
 from keras.models import Sequential
