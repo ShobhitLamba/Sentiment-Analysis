@@ -1,10 +1,10 @@
-# Recurrent Neural Network with LSTM running over imdb dataset
+# Recurrent Neural Network with Bidirectional LSTM running over imdb dataset
 # Author: Shobhit Lamba
 # e-mail: shobhit.lamba@uic.edu
 
 # Importing the libraries
 from keras.models import Sequential
-from keras.layers import Embedding, LSTM, Dense, Dropout
+from keras.layers import Embedding, LSTM, Bidirectional, Dense, Dropout
 from keras.preprocessing import sequence
 from keras.layers.advanced_activations import PReLU
 from keras.datasets import imdb
@@ -14,6 +14,7 @@ MAX_FEATURES = 20000
 batch_size = 32
 MAX_SEQUENCE_LENGTH = 80
 
+
 (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words = MAX_FEATURES)
 
 x_train = sequence.pad_sequences(x_train, MAX_SEQUENCE_LENGTH)
@@ -22,7 +23,7 @@ x_test = sequence.pad_sequences(x_test, MAX_SEQUENCE_LENGTH)
 # Building the network architecture
 model = Sequential()
 model.add(Embedding(MAX_FEATURES, 128))
-model.add(LSTM(128, dropout = 0.2, recurrent_dropout = 0.2)) 
+model.add(Bidirectional(LSTM(128, dropout = 0.2, recurrent_dropout = 0.2), merge_mode = "concat"))
 model.add(Dense(256, activation = 'linear'))
 model.add(PReLU(init = 'zero', weights = None))
 model.add(Dropout(0.2))
@@ -41,7 +42,7 @@ model.summary()
 # Training
 model.fit(x_train, y_train, 
           batch_size = batch_size, 
-          epochs = 10,
+          epochs = 4,
           validation_data = (x_test, y_test))
 
 # Evaluating results
